@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regortz Studio | Creators Lab</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#AADD00',
+                        dark: '#050505',
+                        grayLight: '#1f1f1f'
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px) scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Advanced Aesthetic Base */
+        html {
+            scroll-behavior: smooth;
+        }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: #030303; 
+            color: #ffffff; 
+            overflow-x: hidden; 
+            cursor: none; /* Hide default cursor for custom one */
+            animation: bodyFadeIn 1.5s ease-out forwards;
+        }
+        
+        @keyframes bodyFadeIn {
+            from { opacity: 0; filter: blur(10px); }
+            to { opacity: 1; filter: blur(0); }
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Premium Noise Texture Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Classy Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 10000;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: #AADD00;
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(170, 221, 0, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Glassmorphism Refined */
+        .glass-nav {
+            background: rgba(3, 3, 3, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* Smooth Scroll Reveal Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px) scale(0.95);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Staggered reveals for child elements */
+        .reveal.active .stagger-1 { transition-delay: 0.2s; }
+        .reveal.active .stagger-2 { transition-delay: 0.4s; }
+        .reveal.active .stagger-3 { transition-delay: 0.6s; }
+
+        .card-hover {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(170, 221, 0, 0.08);
+            border-color: rgba(170, 221, 0, 0.3);
+        }
+        
+        /* Slider Animation */
+        .marquee {
+            display: flex;
+            width: max-content;
+            animation: scroll 30s linear infinite;
+        }
+        .marquee:hover {
+            animation-play-state: paused;
+        }
+        @keyframes scroll {
+            to { transform: translateX(calc(-50% - 1rem)); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand selection:text-black relative">
+
+    <!-- Custom Cursor & Noise Texture -->
+    <div class="noise-overlay"></div>
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full glass-nav z-50 py-5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center">
+            <a href="#" class="w-32 lg:w-40 z-10 block mix-blend-screen relative hover:opacity-80 transition-opacity">
+                <img src="./assets/logo.jpg" alt="Regortz Studio" class="w-full h-auto brightness-200 contrast-125" />
+            </a>
+            <div class="hidden md:flex space-x-12 text-xs tracking-[0.2em] font-semibold items-center z-10">
+                <a href="#home" class="hover:text-brand transition-colors duration-300 uppercase">Home</a>
+                <a href="#about" class="hover:text-brand transition-colors duration-300 uppercase">About</a>
+                <a href="#services" class="hover:text-brand transition-colors duration-300 uppercase">Services</a>
+                <a href="#work" class="hover:text-brand transition-colors duration-300 uppercase">Work</a>
+                <a href="#contact" class="px-8 py-3 bg-transparent border border-brand text-brand rounded-full hover:bg-brand hover:text-black transition-all duration-500 uppercase transform hover:scale-105">Let's Connect</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section: Advanced Massive Typography -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-6 lg:px-12 overflow-hidden">
+        <div class="hero-glow animate-pulse-slow"></div>
+        
+        <!-- Giant Background Typography -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 z-0 select-none overflow-hidden">
+            <h1 class="text-[20vw] font-black tracking-tighter whitespace-nowrap text-white">REGORTZ</h1>
+        </div>
+
+        <div class="max-w-7xl w-full mx-auto grid lg:grid-cols-2 gap-16 items-center z-10 relative">
+            <div class="space-y-8 animate-fade-in-up">
+                <div class="inline-block px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-gray-300 text-xs font-semibold tracking-[0.2em] uppercase mb-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+                    The Elite Creators Lab
+                </div>
+                <h1 class="text-6xl lg:text-8xl font-black leading-[1.1] tracking-tighter">
+                    Crafting <br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-green-500 relative inline-block">
+                        Digital
+                        <!-- Subtle underline accent -->
+                        <span class="absolute bottom-2 left-0 w-full h-2 bg-brand/20 blur-sm rounded-full"></span>
+                    </span> <br />
+                    Excellence.
+                </h1>
+                <p class="text-gray-400 text-lg font-inter max-w-md leading-relaxed font-light">
+                    Elevating luxury brands through cutting-edge design, strategic branding, and immersive web experiences that captivate the world.
+                </p>
+                <div class="flex gap-6 pt-6">
+                    <a href="#work" class="px-10 py-4 bg-brand text-black font-black uppercase tracking-widest text-sm rounded-full hover:bg-white hover:shadow-[0_0_30px_rgba(170,221,0,0.4)] transition-all duration-500 flex items-center gap-3 group">
+                        Explore Work 
+                        <svg class="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Hero Image with Parallax floating effect -->
+            <div class="relative animate-fade-in-up hover:animate-none group animate-float" style="animation-delay: 0.2s;">
+                <div class="absolute inset-0 bg-gradient-to-tr from-brand/10 to-transparent rounded-[2.5rem] blur-3xl transform group-hover:scale-110 transition-transform duration-1000"></div>
+                <div class="relative z-10 w-full h-[600px] rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl">
+                    <img src="./assets/hero-image.png" alt="Creative Design" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[1.5s] ease-out" />
+                    <!-- Glass reflection overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 bg-dark relative border-t border-white/5 reveal">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in-up stagger-1">
+                <h2 class="text-4xl lg:text-5xl font-black mb-4">Who <span class="text-brand">We Are</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto font-inter text-lg">Regortz Studio is more than an agency. We are a collective of digital artisans building the future of premium online experiences.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-brand to-green-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                    <img src="./assets/team-hero.png" alt="Our Team" class="relative rounded-3xl border border-white/10 object-cover w-full h-full" />
+                </div>
+                <div class="space-y-6">
+                    <h3 class="text-3xl font-bold">Innovation at our core.</h3>
+                    <p class="text-gray-400 font-inter text-lg leading-relaxed">
+                        At Regortz Studio, we don't just build websites; we architect digital ecosystems. From striking visual identities to seamless user interfaces, our team merges art with technology.
+                    </p>
+                    <ul class="space-y-4 pt-4">
+                        <li class="flex items-center gap-4 text-lg">
+                            <span class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand">✓</span>
+                            Strategic Branding
+                        </li>
+                        <li class="flex items-center gap-4 text-lg">
+                            <span class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand">✓</span>
+                            UI/UX Design
+                        </li>
+                        <li class="flex items-center gap-4 text-lg">
+                            <span class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand">✓</span>
+                            High-End Web Development
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-dark relative overflow-hidden reveal">
+        <!-- Background aesthetic element -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-96 bg-brand/5 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-black mb-4">Our <span class="text-brand">Expertise</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto font-inter text-lg">Comprehensive digital solutions engineered for growth and impact.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="group bg-grayLight/50 backdrop-blur-sm border border-white/5 rounded-3xl p-8 hover:border-brand/40 hover:bg-brand/5 transition-all duration-500 transform hover:-translate-y-2 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-black border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(170,221,0,0.15)] group-hover:shadow-[0_0_25px_rgba(170,221,0,0.4)]">
+                        <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Web Development</h3>
+                    <p class="text-gray-400 font-inter leading-relaxed">High-performance, responsive websites built with modern technologies to deliver flawless user experiences.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group bg-grayLight/50 backdrop-blur-sm border border-white/5 rounded-3xl p-8 hover:border-brand/40 hover:bg-brand/5 transition-all duration-500 transform hover:-translate-y-2 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-black border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(170,221,0,0.15)] group-hover:shadow-[0_0_25px_rgba(170,221,0,0.4)]">
+                        <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">App Development</h3>
+                    <p class="text-gray-400 font-inter leading-relaxed">Intuitive and robust mobile applications designed to engage users and scale your business.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-grayLight border border-white/5 rounded-3xl p-8 hover:border-brand/30 transition-colors duration-500 stagger-2 card-hover">
+                    <div class="w-14 h-14 bg-brand/10 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Performance</h3>
+                    <p class="text-gray-400 font-inter text-sm leading-relaxed">Lightning-fast architectures designed for maximum conversion and seamless interactions.</p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="group bg-grayLight/50 backdrop-blur-sm border border-white/5 rounded-3xl p-8 hover:border-brand/40 hover:bg-brand/5 transition-all duration-500 transform hover:-translate-y-2 lg:col-span-1 md:col-span-2 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-black border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(170,221,0,0.15)] group-hover:shadow-[0_0_25px_rgba(170,221,0,0.4)]">
+                        <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Performance Marketing</h3>
+                    <p class="text-gray-400 font-inter leading-relaxed">Data-driven marketing generation focused on maximizing ROI, targeted lead acquisition, and measurable conversions.</p>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="group bg-gradient-to-br from-grayLight/50 to-brand/10 backdrop-blur-sm border border-brand/20 rounded-3xl p-8 hover:border-brand/60 hover:from-brand/10 hover:to-brand/20 transition-all duration-500 transform hover:-translate-y-2 lg:col-span-2 md:col-span-2 card-hover">
+                    <div class="w-14 h-14 rounded-2xl bg-brand border border-brand text-black flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(170,221,0,0.4)]">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-3">Overall Digital Service</h3>
+                    <p class="text-gray-400 font-inter leading-relaxed max-w-2xl">A holistic approach to your digital presence. We blend design, technology, and strategy to provide comprehensive end-to-end solutions that elevate your brand across every digital touchpoint.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Work Section -->
+    <section id="work" class="py-24 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                    <h2 class="text-4xl lg:text-5xl font-black mb-4">Featured <span class="text-brand">Projects</span></h2>
+                    <p class="text-gray-400 font-inter text-lg max-w-xl">A glimpse into our recent collaborations and successful live websites.</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1: Diorette -->
+                <a href="https://diorette.in/" target="_blank" class="group block cursor-pointer card-hover bg-grayLight border border-white/5 rounded-3xl overflow-hidden relative">
+                    <div class="h-64 overflow-hidden relative border-b border-white/10">
+                        <!-- Using local images for thumbnails -->
+                        <img src="./assets/diorette.png" alt="Diorette" class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-700" onerror="this.src='./assets/project-branding.png'" />
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="bg-brand text-black px-6 py-3 rounded-full font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(170,221,0,0.5)] flex items-center gap-2">
+                                Visit Site 
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-brand text-sm font-bold tracking-widest mb-2 uppercase">E-Commerce & Fashion</p>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-brand transition-colors">Diorette</h3>
+                        <p class="text-gray-500 font-inter mt-3 line-clamp-2">Premium fashion and jewelry platform with seamless user experience.</p>
+                    </div>
+                </a>
+
+                <!-- Project 2: RV Global Aviation -->
+                <a href="https://rvglobalaviation.com/" target="_blank" class="group block cursor-pointer card-hover bg-grayLight border border-white/5 rounded-3xl overflow-hidden relative">
+                    <div class="h-64 overflow-hidden relative border-b border-white/10">
+                        <img src="./assets/rvglobal.png" alt="RV Global Aviation" class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-700" onerror="this.src='./assets/project-ads.png'" />
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="bg-brand text-black px-6 py-3 rounded-full font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(170,221,0,0.5)] flex items-center gap-2">
+                                Visit Site 
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-brand text-sm font-bold tracking-widest mb-2 uppercase">Corporate & Aviation</p>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-brand transition-colors">RV Global Aviation</h3>
+                        <p class="text-gray-500 font-inter mt-3 line-clamp-2">Professional digital presence for elite aviation and charter services.</p>
+                    </div>
+                </a>
+
+                <!-- Project 3: Handcrafted by Kajal -->
+                <a href="https://handcraftedbykajal.com/" target="_blank" class="group block cursor-pointer card-hover bg-grayLight border border-white/5 rounded-3xl overflow-hidden relative lg:col-span-1 md:col-span-2">
+                    <div class="h-64 overflow-hidden relative border-b border-white/10">
+                        <img src="./assets/kajal.png" alt="Handcrafted by Kajal" class="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-700" onerror="this.src='./assets/project-branding.png'" />
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="bg-brand text-black px-6 py-3 rounded-full font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(170,221,0,0.5)] flex items-center gap-2">
+                                Visit Site 
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-brand text-sm font-bold tracking-widest mb-2 uppercase">Creative & Boutique</p>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-brand transition-colors">Handcrafted by Kajal</h3>
+                        <p class="text-gray-500 font-inter mt-3 line-clamp-2">Beautiful bespoke platform highlighting artisanal creations.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 bg-[#0a0a0a] relative overflow-hidden">
+        <div class="absolute inset-0 bg-brand/5 blur-[150px] rounded-full w-3/4 h-96 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 mb-16 text-center">
+            <h2 class="text-4xl lg:text-5xl font-black mb-4">Client <span class="text-brand">Testimonials</span></h2>
+            <p class="text-gray-400 font-inter text-lg max-w-xl mx-auto">Hear what our partners have to say about the digital experiences we've crafted for them.</p>
+        </div>
+
+        <!-- Sliding Marquee Container -->
+        <div class="w-full overflow-hidden relative z-10 py-4" style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+            <div class="marquee gap-8">
+                <!-- We duplicate the cards inside the marquee to create an infinite loop effect -->
+                <!-- Set 1 -->
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=47" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Priya Sharma</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">CEO, Diorette</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "Regortz Studio completely transformed our online presence. The aesthetic, the flow, and the premium feel of our E-commerce platform have significantly boosted our sales and brand prestige."
+                    </p>
+                </div>
+
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=11" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Rajesh Verma</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">Founder, RV Global</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "Their attention to detail and understanding of the luxury aviation market is unmatched. The site is fast, responsive, and generates high-quality charter leads constantly."
+                    </p>
+                </div>
+
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=32" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Kajal Mehta</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">Founder, Handcrafted</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "I wanted something that felt bespoke and artistic. Regortz nailed the brief perfectly. My boutique's website is now as handcrafted as the products I sell!"
+                    </p>
+                </div>
+                
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=68" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Aman Gupta</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">Marketing Director</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "The performance marketing campaigns executed by Regortz generated a 3x ROI within the first quarter. Their digital strategies are simply brilliant."
+                    </p>
+                </div>
+
+                <!-- Set 2 (Duplicated for seamless loop) -->
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=47" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Priya Sharma</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">CEO, Diorette</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "Regortz Studio completely transformed our online presence. The aesthetic, the flow, and the premium feel of our E-commerce platform have significantly boosted our sales and brand prestige."
+                    </p>
+                </div>
+
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=11" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Rajesh Verma</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">Founder, RV Global</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "Their attention to detail and understanding of the luxury aviation market is unmatched. The site is fast, responsive, and generates high-quality charter leads constantly."
+                    </p>
+                </div>
+
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=32" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Kajal Mehta</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">Founder, Handcrafted</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "I wanted something that felt bespoke and artistic. Regortz nailed the brief perfectly. My boutique's website is now as handcrafted as the products I sell!"
+                    </p>
+                </div>
+                
+                <div class="w-[350px] md:w-[450px] flex-shrink-0 bg-grayLight/50 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-brand/50 transition-colors shadow-lg">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand p-1 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                            <img src="https://i.pravatar.cc/150?img=68" alt="Client" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Aman Gupta</h4>
+                            <p class="text-brand text-sm tracking-widest uppercase">Marketing Director</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-inter leading-relaxed text-lg italic">
+                        "The performance marketing campaigns executed by Regortz generated a 3x ROI within the first quarter. Their digital strategies are simply brilliant."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comprehensive Footer -->
+    <footer id="contact" class="bg-[#050505] pt-24 pb-8 border-t border-white/5 relative overflow-hidden">
+        <!-- Aesthetic background blur -->
+        <div class="absolute -bottom-40 left-1/2 transform -translate-x-1/2 w-3/4 h-80 bg-brand/10 blur-[150px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+                
+                <!-- Brand Info -->
+                <div class="space-y-6">
+                    <a href="#" class="block w-40 mix-blend-screen">
+                        <img src="./assets/logo.jpg" alt="Regortz Studio" class="w-full h-auto brightness-200 contrast-125" />
+                    </a>
+                    <p class="text-gray-400 font-inter text-sm leading-relaxed max-w-xs">
+                        A collective of passionate designers and strategists building high-end digital ecosystems.
+                    </p>
+                    <div class="flex space-x-4 pt-2">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-brand hover:text-black hover:border-brand transition-all duration-300 shadow-[0_0_0_rgba(170,221,0,0)] hover:shadow-[0_0_15px_rgba(170,221,0,0.5)]">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-brand hover:text-black hover:border-brand transition-all duration-300 shadow-[0_0_0_rgba(170,221,0,0)] hover:shadow-[0_0_15px_rgba(170,221,0,0.5)]">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-brand hover:text-black hover:border-brand transition-all duration-300 shadow-[0_0_0_rgba(170,221,0,0)] hover:shadow-[0_0_15px_rgba(170,221,0,0.5)]">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="space-y-6">
+                    <h4 class="text-white font-bold text-lg">Quick Links</h4>
+                    <ul class="space-y-3 font-inter text-gray-400">
+                        <li><a href="#home" class="hover:text-brand transition-colors duration-300">Home</a></li>
+                        <li><a href="#about" class="hover:text-brand transition-colors duration-300">About Us</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors duration-300">Our Services</a></li>
+                        <li><a href="#work" class="hover:text-brand transition-colors duration-300">Featured Work</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services Links -->
+                <div class="space-y-6">
+                    <h4 class="text-white font-bold text-lg">Our Expertise</h4>
+                    <ul class="space-y-3 font-inter text-gray-400">
+                        <li><a href="#services" class="hover:text-brand transition-colors duration-300">Web Development</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors duration-300">App Development</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors duration-300">Social Media</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors duration-300">Performance Marketing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact CTA -->
+                <div class="space-y-6">
+                    <h4 class="text-white font-bold text-lg">Let's Create</h4>
+                    <p class="text-gray-400 font-inter text-sm leading-relaxed mb-4">
+                        Ready to elevate your digital presence? We're here to help you grow.
+                    </p>
+                    <a href="mailto:hello@regortz.com" class="inline-flex px-8 py-3 bg-brand text-black font-bold uppercase tracking-wider rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                        Get In Touch
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Copyright -->
+            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 font-inter gap-4">
+                <p>&copy; 2026 Regortz Studio. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-brand transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Adding a slight delay to the outline for a smooth aesthetic trailing effect
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Interactive hover effect for the cursor
+        document.querySelectorAll('a, button, .group').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(170, 221, 0, 0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Scroll Reveal Animations using Intersection Observer
+        const revealElements = document.querySelectorAll('#about, #services, #work, #testimonials, .group');
+        revealElements.forEach(el => el.classList.add('reveal'));
+
+        const revealOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target);
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // Simple scroll effect for navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
