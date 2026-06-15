@@ -38,104 +38,7 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        /* Advanced Aesthetic Base */
-        html {
-            scroll-behavior: smooth;
-        }
-        body { 
-            font-family: 'Outfit', sans-serif; 
-            background-color: #030303; 
-            color: #ffffff; 
-            overflow-x: hidden; 
-            cursor: none; /* Hide default cursor for custom one */
-            animation: bodyFadeIn 1.5s ease-out forwards;
-        }
-        
-        @keyframes bodyFadeIn {
-            from { opacity: 0; filter: blur(10px); }
-            to { opacity: 1; filter: blur(0); }
-        }
-        
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        /* Premium Noise Texture Overlay */
-        .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* Custom Classy Cursor */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 10000;
-            pointer-events: none;
-        }
-        .cursor-dot {
-            width: 8px; height: 8px;
-            background-color: #AADD00;
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid rgba(170, 221, 0, 0.5);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-
-        /* Glassmorphism Refined */
-        .glass-nav {
-            background: rgba(3, 3, 3, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        /* Smooth Scroll Reveal Classes */
-        .reveal {
-            opacity: 0;
-            transform: translateY(60px) scale(0.95);
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-        
-        /* Staggered reveals for child elements */
-        .reveal.active .stagger-1 { transition-delay: 0.2s; }
-        .reveal.active .stagger-2 { transition-delay: 0.4s; }
-        .reveal.active .stagger-3 { transition-delay: 0.6s; }
-
-        .card-hover {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .card-hover:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(170, 221, 0, 0.08);
-            border-color: rgba(170, 221, 0, 0.3);
-        }
-        
-        /* Slider Animation */
-        .marquee {
-            display: flex;
-            width: max-content;
-            animation: scroll 30s linear infinite;
-        }
-        .marquee:hover {
-            animation-play-state: paused;
-        }
-        @keyframes scroll {
-            to { transform: translateX(calc(-50% - 1rem)); }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="antialiased selection:bg-brand selection:text-black relative">
 
@@ -155,7 +58,7 @@
                 <a href="#about" class="hover:text-brand transition-colors duration-300 uppercase">About</a>
                 <a href="#services" class="hover:text-brand transition-colors duration-300 uppercase">Services</a>
                 <a href="#work" class="hover:text-brand transition-colors duration-300 uppercase">Work</a>
-                <a href="#contact" class="px-8 py-3 bg-transparent border border-brand text-brand rounded-full hover:bg-brand hover:text-black transition-all duration-500 uppercase transform hover:scale-105">Let's Connect</a>
+                <a href="#" onclick="openPopup(event)" class="px-8 py-3 bg-transparent border border-brand text-brand rounded-full hover:bg-brand hover:text-black transition-all duration-500 uppercase transform hover:scale-105 cursor-pointer">Let's Connect</a>
             </div>
         </div>
     </nav>
@@ -509,6 +412,51 @@
         </div>
     </section>
 
+    <!-- Contact Form Section -->
+    <section id="contact-section" class="py-24 bg-dark relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <h2 class="text-4xl lg:text-6xl font-black leading-tight">
+                        Ready to Hit <br />
+                        <span class="text-brand">Different?</span>
+                    </h2>
+                    <p class="text-gray-400 font-inter text-lg max-w-md">
+                        Stop blending in. Let's build something that stays in their memory long after they scroll. Fill out the form and we'll be in touch.
+                    </p>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-gray-500 font-inter text-xs tracking-widest uppercase mb-1">Email Us</p>
+                            <p class="text-xl font-bold text-white hover:text-brand transition-colors">hello@regortz.com</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-[2rem]">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Name</label>
+                                <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand transition-all font-inter" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Email</label>
+                                <input type="email" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand transition-all font-inter" placeholder="john@example.com">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Message</label>
+                            <textarea required rows="4" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand transition-all font-inter resize-none" placeholder="Tell us about your project..."></textarea>
+                        </div>
+                        <button type="button" class="w-full py-4 bg-brand text-black font-bold uppercase tracking-wider rounded-xl hover:bg-white transition-all duration-300 shadow-[0_0_15px_rgba(170,221,0,0.2)] hover:shadow-[0_0_25px_rgba(170,221,0,0.4)]">
+                            Ignite Partnership
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Comprehensive Footer -->
     <footer id="contact" class="bg-[#050505] pt-24 pb-8 border-t border-white/5 relative overflow-hidden">
         <!-- Aesthetic background blur -->
@@ -566,7 +514,7 @@
                     <p class="text-gray-400 font-inter text-sm leading-relaxed mb-4">
                         Ready to elevate your digital presence? We're here to help you grow.
                     </p>
-                    <a href="mailto:hello@regortz.com" class="inline-flex px-8 py-3 bg-brand text-black font-bold uppercase tracking-wider rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(170,221,0,0.3)]">
+                    <a href="#contact-section" class="inline-flex px-8 py-3 bg-brand text-black font-bold uppercase tracking-wider rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(170,221,0,0.3)] cursor-pointer">
                         Get In Touch
                     </a>
                 </div>
@@ -584,69 +532,38 @@
         </div>
     </footer>
 
-    <script>
-        // Custom Cursor Logic
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
+    <script src="script.js" defer></script>
+    <!-- Popup Form Modal -->
+    <div id="contactPopup" class="fixed inset-0 z-[100000] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closePopup()"></div>
+        <!-- Modal Content -->
+        <div class="relative bg-grayLight/80 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-[2rem] shadow-2xl max-w-md w-full mx-4 transform scale-95 transition-transform duration-500" id="popupContent">
+            <button onclick="closePopup()" class="absolute top-6 right-6 text-gray-400 hover:text-brand transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-black text-white mb-2">Let's <span class="text-brand">Talk</span></h3>
+            <p class="text-gray-400 font-inter mb-8">Fill out the form below and we'll get back to you shortly.</p>
+            
+            <form class="space-y-6" onsubmit="submitForm(event)">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2 font-inter">Name</label>
+                    <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all font-inter placeholder-gray-600" placeholder="John Doe">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2 font-inter">Email</label>
+                    <input type="email" required class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all font-inter placeholder-gray-600" placeholder="john@example.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2 font-inter">Message</label>
+                    <textarea required rows="4" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all font-inter placeholder-gray-600 resize-none" placeholder="Tell us about your project..."></textarea>
+                </div>
+                <button type="submit" class="w-full py-4 bg-brand text-black font-bold uppercase tracking-wider rounded-xl hover:bg-white transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_15px_rgba(170,221,0,0.2)] hover:shadow-[0_0_25px_rgba(170,221,0,0.4)]">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
 
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-
-            // Adding a slight delay to the outline for a smooth aesthetic trailing effect
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
-
-        // Interactive hover effect for the cursor
-        document.querySelectorAll('a, button, .group').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursorOutline.style.width = '60px';
-                cursorOutline.style.height = '60px';
-                cursorOutline.style.backgroundColor = 'rgba(170, 221, 0, 0.1)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursorOutline.style.width = '40px';
-                cursorOutline.style.height = '40px';
-                cursorOutline.style.backgroundColor = 'transparent';
-            });
-        });
-
-        // Scroll Reveal Animations using Intersection Observer
-        const revealElements = document.querySelectorAll('#about, #services, #work, #testimonials, .group');
-        revealElements.forEach(el => el.classList.add('reveal'));
-
-        const revealOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target);
-            });
-        }, revealOptions);
-
-        revealElements.forEach(el => {
-            revealOnScroll.observe(el);
-        });
-
-        // Simple scroll effect for navbar
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg');
-            } else {
-                nav.classList.remove('shadow-lg');
-            }
-        });
-    </script>
 </body>
 </html>

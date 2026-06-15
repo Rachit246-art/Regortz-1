@@ -1,0 +1,96 @@
+/* Advanced Aesthetic Base */
+html {
+    scroll-behavior: smooth;
+}
+body { 
+    font-family: 'Outfit', sans-serif; 
+    background-color: #030303; 
+    color: #ffffff; 
+    overflow-x: hidden; 
+    cursor: none; /* Hide default cursor for custom one */
+    animation: bodyFadeIn 1.5s ease-out forwards;
+}
+
+@keyframes bodyFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Premium Noise Texture Overlay */
+.noise-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom Classy Cursor */
+.cursor-dot, .cursor-outline {
+    position: fixed;
+    top: 0; left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 10000;
+    pointer-events: none;
+}
+.cursor-dot {
+    width: 8px; height: 8px;
+    background-color: #AADD00;
+}
+.cursor-outline {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(170, 221, 0, 0.5);
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+/* Glassmorphism Refined */
+.glass-nav {
+    background: rgba(3, 3, 3, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Smooth Scroll Reveal Classes */
+.reveal {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Staggered reveals for child elements */
+.reveal.active .stagger-1 { transition-delay: 0.2s; }
+.reveal.active .stagger-2 { transition-delay: 0.4s; }
+.reveal.active .stagger-3 { transition-delay: 0.6s; }
+
+.card-hover {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(170, 221, 0, 0.08);
+    border-color: rgba(170, 221, 0, 0.3);
+}
+
+/* Slider Animation */
+.marquee {
+    display: flex;
+    width: max-content;
+    animation: scroll 30s linear infinite;
+}
+.marquee:hover {
+    animation-play-state: paused;
+}
+@keyframes scroll {
+    to { transform: translateX(calc(-50% - 1rem)); }
+}
